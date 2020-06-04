@@ -16,11 +16,15 @@
   - [File Permissions](#file-permission-numbers)
 
 - [Working with Git](#working-with-git)
+
   - [Quick Start](#quick-start)
   - [Creating a project](#create-project)
   - [Branching & Merging](#branching-and-merging)
   - [Delete a project](#delete-project)
   - [Referring to revisions](#referring-to-revisions)
+
+- [Working with AWS](#working-with-aws) -[Quick Start](#quick-start)
+  - [S3 - Simple Storage Service](#s3)
 
 ## Working with Bash
 
@@ -105,7 +109,6 @@
 - `git push -u origin <new-branch>` Sync local branch with remote
 - `git checkout <branch>` Checkout branch
 - `git push origin <branch>` Push branch to remote
-
 - `git branch -d <branchname>` deletes local branch
 - `git push origin :<branchname>` deletes remote branch
 
@@ -166,3 +169,69 @@
 - `git diff origin..master` pipes a diff into PAGER
 - `git diff origin..master > my.patch` pipes a diff into my.patch
 - `git diff --stat HEAD` get diffstat of uncommitted work
+
+## Working with AWS
+
+### Quick Start
+
+- [Install & Configure](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) AWS CLI
+
+> If you have multiple AWS Accounts, you can use bash alias like the following. So you no longer need to pass `--profile` to `aws` tool.
+
+```bash
+alias aws-prod="aws --profile work-prod"
+alias aws-dev="aws --profile work-dev"
+alias aws-self="aws --profile personal"
+alias aws="aws --profile work-dev"
+```
+
+### S3
+
+**List Buckets**
+
+`aws s3 ls`
+
+**List Files in a Bucket**
+
+`aws s3 ls zachs-bucket/uploads/*`
+
+**Create Buckets**
+
+`aws s3 mb s3://zachs-bucket`
+
+**Delete Buckets**
+
+`aws s3 rb s3://zachs-bucket --force`
+
+**Download S3 Object to Local**
+
+```bash
+aws s3 cp backup.tar s3://zachs-bucket .
+download: ./backup.tar from s3://zachs-bucket/backup.tar
+```
+
+**Upload Local File as S3 Object**
+
+```bash
+aws s3 cp backup.tar s3://zachs-bucket
+upload: ./backup.tar to s3://zachs-bucket/backup.tar
+```
+
+**Delete S3 Object**
+
+```bash
+aws s3 rm s3://zachs-bucket/secret-file.gz .
+delete: s3://zachs-bucket/secret-file.gz
+```
+
+**Download Bucket to Local**
+
+```bash
+aws s3 sync s3://zachs-bucket/ /Zachs/Backup
+```
+
+**Upload Local Directory to Bucket**
+
+```bash
+aws s3 sync /home/zach/Downloads s3://zachs-bucket/
+```
